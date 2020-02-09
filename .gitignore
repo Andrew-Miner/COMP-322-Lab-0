@@ -47,3 +47,6 @@
 
 #Debug Folder
 Debug/
+
+#Release Folder
+Release/
