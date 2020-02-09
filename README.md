@@ -1,8 +1,9 @@
 
 Author: Andrew Miner
+
 Class: Comp 322
 
-
+-
 2/8/20 - 12:00pm 
 	Started installing GCC and an IDE.
 
