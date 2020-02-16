@@ -4,13 +4,15 @@
 #include <stdio.h>
 #include<fcntl.h>
 #include <math.h>
+#include <string.h>
 
 typedef enum { true, false } bool;
 
 int getBinary(int fileDesc, char* buffer, int bufSize);
 bool isEvenParity(const char* binChars, int count);
 int getDecVal(const char* binChars, int count);
-bool outputBinary(const char* fileName);
+bool outputBinFile(const char* fileName);
+bool outputBinArgs(const int argc, const char* argv[]);
 
 const char* mnemonicASCII[] = { "NUL", "SOH", "STX", "ETX", "EOT", "ENQ",
 							   "ACK", "BEL", "BS", "HT", "LF", "VT", "FF",
@@ -23,36 +25,76 @@ int main(int argc, char* argv[])
 	if (argc > 1)
 	{
 		int i = 1;
+		int fileNamePos = -1;
 		for (; i < argc; i++)
 		{
 			if (argv[i][0] == '-')
-				continue;
-			break;
+			{
+				if(strlen(argv[i]) == 1)
+					continue;
+				printf("Error: Invalid Input!");
+				break;
+			}
+
+			if (isNumber(argv[i]) == false)
+			{
+				fileNamePos = i;
+				break;
+			}
 		}
 
-		if (i < argc)
-		{
-			outputBinary(argv[i]);
-			return 0;
-		}
+		if (i == argc)
+			outputBinArgs(argc, argv);
+		else if (fileNamePos != -1)
+			outputBinFile(argv[i]);
 	}
-
-	char fileName[128];
-	printf("Enter file: ");
-	scanf("%s", fileName);
-
-	outputBinary(fileName);
 
 	return 0;
 }
 
-bool outputBinary(const char* fileName)
+void printBinary(char binary[9])
+{
+	int dec = getDecVal(binary, 8);
+	char* parity = (isEvenParity(binary, 8)) ? "EVEN" : "ODD";
+
+	if (dec < 33)
+		printf("%8s %8s %8i %8s\n", binary, mnemonicASCII[dec], dec, parity);
+	else
+		printf("%8s %8c %8i %8s\n", binary, (char)dec, dec, parity);
+}
+
+bool outputBinArgs(const int argc, const char* argv[])
+{
+	printf("%8s %8s %8s %8s\n", "Original", "ASCII", "Decimal", "Parity");
+	printf("-------- -------- -------- --------\n");
+
+	for (int i = 1; i < argc; i++)
+	{
+		if (argv[i][0] == '-')
+			continue;
+
+		char bin[9];
+		bin[8] = '\0';
+
+		int j = 0, len = strlen(argv[i]);
+		for (; j < len; j++)
+			bin[j] = argv[i][j];
+		while (j < 8)
+			bin[j++] = '0';
+
+		printBinary(bin);
+	}
+}
+
+bool outputBinFile(const char* fileName)
 {
 	int fileDesc = open(fileName, O_RDONLY, 0);
 
 	if (fileDesc == -1)
 	{
-		printf("Error: The file cannot be opened!\n");
+		printf("Error: The file ");
+		printf(fileName);
+		printf(" cannot be opened!\n");
 		return false;
 	}
 
@@ -65,15 +107,7 @@ bool outputBinary(const char* fileName)
 	do
 	{
 		rVal = getBinary(fileDesc, rByte, 8);
-
-		int dec = getDecVal(rByte, 8);
-		char* parity = (isEvenParity(rByte, 8)) ? "EVEN" : "ODD";
-
-		if (dec < 33)
-			printf("%8s %8s %8i %8s\n", rByte, mnemonicASCII[dec], dec, parity);
-		else
-			printf("%8s %8c %8i %8s\n", rByte, (char)dec, dec, parity);
-
+		printBinary(rByte);
 	} while (rVal == 8);
 
 	if (rVal == -1)
@@ -111,9 +145,19 @@ int getBinary(int fileDesc, char* buffer, int bufSize)
 	return rVal;
 }
 
+bool isNumber(const char* str)
+{
+	for (int i = 0; str[i] != '\0'; i++)
+	{
+		if (!isdigit(str[i]))
+			return false;
+	}
+	return true;
+}
+
 bool isEvenParity(const char* binChars, int count)
 {
-	bool even = true;
+	bool even = false;
 	for (int i = 0; i < count; i++)
 		if (binChars[i] == '1')
 			even = !even;
