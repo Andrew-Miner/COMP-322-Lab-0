@@ -8,9 +8,12 @@
 
 typedef enum { true, false } bool;
 
-int getBinary(int fileDesc, char* buffer, int bufSize);
-bool isEvenParity(const char* binChars, int count);
+bool isNumber(const char* str);
+void printBinary(char binary[9]);
 int getDecVal(const char* binChars, int count);
+bool isEvenParity(const char* binChars, int count);
+int getBinary(int fileDesc, char* buffer, int bufSize);
+
 bool outputBinFile(const char* fileName);
 bool outputBinArgs(const int argc, const char* argv[]);
 
