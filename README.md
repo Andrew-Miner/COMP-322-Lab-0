@@ -16,6 +16,7 @@ Class: Comp 322-16820
 2/8/20 - 6:30
 	Finished Github Repository and submitted the project.
 
-
+2/15/20 - 4:26
+	Fixed input parsing and committed changes to Github.
 
 Project Status: Finished and Working!
