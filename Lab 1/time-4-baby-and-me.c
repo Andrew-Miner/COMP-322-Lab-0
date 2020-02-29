@@ -21,7 +21,7 @@ void printPIDs(int child, int retVal)
 
 int main(int argc, char* argv[])
 {
-    printf("Start: %ld\n", time(NULL));
+    printf("START: %ld\n", time(NULL));
     
     struct tms buf;
     
@@ -37,7 +37,7 @@ int main(int argc, char* argv[])
     times(&buf);
     printf("USER: %ld, SYS: %ld\n", buf.tms_utime, buf.tms_stime);
     printf("CUSER: %ld, CSYS: %ld\n", buf.tms_utime, buf.tms_stime);
-    printf("Stop: %ld\n", time(NULL));
+    printf("STOP: %ld\n", time(NULL));
     
 	return 0;
 }
