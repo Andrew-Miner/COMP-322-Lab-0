@@ -1,5 +1,5 @@
 # Name: Andrew Miner
-# Project: Lab 1
+# Project: Lab 2
 
 # This is a Makefile for my lab assignment. It allows me to easily and accurately rebuild
 # the lab assignment.
