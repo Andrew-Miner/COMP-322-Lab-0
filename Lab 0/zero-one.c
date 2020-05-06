@@ -25,22 +25,18 @@ const char* mnemonicASCII[] = { "NUL", "SOH", "STX", "ETX", "EOT", "ENQ",
 
 int main(int argc, char* argv[])
 {
-	if (argc > 1)
-	{
+	if (argc > 1) {
 		int i = 1;
 		int fileNamePos = -1;
-		for (; i < argc; i++)
-		{
-			if (argv[i][0] == '-')
-			{
+		for (; i < argc; i++) {
+			if (argv[i][0] == '-') {
 				if(strlen(argv[i]) == 1)
 					continue;
 				printf("Error: Invalid Input!");
 				break;
 			}
 
-			if (isNumber(argv[i]) == false)
-			{
+			if (isNumber(argv[i]) == false) {
 				fileNamePos = i;
 				break;
 			}
@@ -71,8 +67,7 @@ bool outputBinArgs(const int argc, const char* argv[])
 	printf("%8s %8s %8s %8s\n", "Original", "ASCII", "Decimal", "Parity");
 	printf("-------- -------- -------- --------\n");
 
-	for (int i = 1; i < argc; i++)
-	{
+	for (int i = 1; i < argc; i++) {
 		if (argv[i][0] == '-')
 			continue;
 
@@ -93,8 +88,7 @@ bool outputBinFile(const char* fileName)
 {
 	int fileDesc = open(fileName, O_RDONLY, 0);
 
-	if (fileDesc == -1)
-	{
+	if (fileDesc == -1) {
 		printf("Error: The file ");
 		printf(fileName);
 		printf(" cannot be opened!\n");
@@ -107,14 +101,12 @@ bool outputBinFile(const char* fileName)
 	char rByte[9];
 	rByte[8] = '\0';
 	int rVal = 0;
-	do
-	{
+	do {
 		rVal = getBinary(fileDesc, rByte, 8);
 		printBinary(rByte);
 	} while (rVal == 8);
 
-	if (rVal == -1)
-	{
+	if (rVal == -1) {
 		printf("Warning: read() function returned an error!");
 		return false;
 	}
@@ -125,8 +117,7 @@ int getBinary(int fileDesc, char* buffer, int bufSize)
 {
 	int i = 0;
 	int rVal = -1;
-	while (i < bufSize)
-	{
+	while (i < bufSize) {
 		char c;
 		rVal = read(fileDesc, &c, 1);
 
@@ -150,8 +141,7 @@ int getBinary(int fileDesc, char* buffer, int bufSize)
 
 bool isNumber(const char* str)
 {
-	for (int i = 0; str[i] != '\0'; i++)
-	{
+	for (int i = 0; str[i] != '\0'; i++) {
 		if (!isdigit(str[i]))
 			return false;
 	}
@@ -170,8 +160,7 @@ bool isEvenParity(const char* binChars, int count)
 int getDecVal(const char* binChars, int count)
 {
 	int dec = 0;
-	for (int i = 1; i < count; i++) // starts at 1 to skip extra 8th bit
-	{
+    for (int i = 1; i < count; i++) { // starts at 1 to skip extra 8th bit
 		if (binChars[i] == '0') continue;
 		dec += pow(2, count - i - 1);
 	}
