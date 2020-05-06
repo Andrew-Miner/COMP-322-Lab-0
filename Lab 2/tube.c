@@ -8,8 +8,7 @@
 
 int getDelimiter(char* delimiter, int argc, char* argv[])
 {
-    for(int i = 1; i < argc; i++)
-    {
+    for(int i = 1; i < argc; i++) {
         if(strcmp(delimiter, argv[i]) == 0)
             return i;
     }
@@ -18,38 +17,33 @@ int getDelimiter(char* delimiter, int argc, char* argv[])
 
 int main(int argc, char* argv[])
 {
-    if(argc <= 1)
-    {
+    if(argc <= 1) {
         fprintf(stderr, "Error: program arguments missing!\n");
-        return 0;
+        return -1;
     }
     
     // Find comma position
     int delimiterPos = getDelimiter(",", argc, argv);
-    if(delimiterPos == -1)
-    {
+    if(delimiterPos == -1) {
         fprintf(stderr, "Error: missing delimiter (\",\")!");
-        return 0;
+        return -1;
     }
     
     // Create Pipe
     int pipefd[2];
-    if(pipe(pipefd) == -1)
-    {
+    if(pipe(pipefd) == -1) {
         fprintf(stderr, "Error: failed to create pipe!\n");
-        return 0;
+        return -1;
     }
     
     // Spawn first child
     pid_t c1PID = fork();
-    if(c1PID == -1)
-    {
+    if(c1PID == -1) {
         fprintf(stderr, "Error: failed to create child process!");
-        return 0;
+        return -1;
     }
     
-    if(c1PID == 0) // Child1 Process Code
-    {
+    if(c1PID == 0) { // Child1 Process Code
         dup2(pipefd[1], STDOUT_FILENO);
         close(pipefd[0]);
         
@@ -66,14 +60,12 @@ int main(int argc, char* argv[])
     {
         // Spawn second child
         pid_t c2PID = fork();
-        if(c2PID == -1)
-        {
+        if(c2PID == -1) {
             fprintf(stderr, "Error: failed to create child process!");
-            return 0;
+            return -1;
         }
         
-        if(c2PID == 0) // Child2 Process Code
-        {
+        if(c2PID == 0) { // Child2 Process Code
             dup2(pipefd[0], STDIN_FILENO);
             close(pipefd[1]);
             
@@ -86,8 +78,7 @@ int main(int argc, char* argv[])
             char* envp[] = { NULL };
             execve(argv[delimiterPos + 1], cArgs, envp);
         }
-        else // Parent Process Code
-        {
+        else { // Parent Process Code
             fprintf(stderr, "%s: $$ = %d\n", argv[1], c1PID);
             fprintf(stderr, "%s: $$ = %d\n", argv[delimiterPos + 1], c2PID);
             

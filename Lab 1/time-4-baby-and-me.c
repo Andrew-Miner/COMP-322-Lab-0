@@ -19,7 +19,7 @@ void printPIDs(int child, int retVal)
     printf("\n");
 }
 
-int main(int argc, char* argv[])
+int main()
 {
     printf("START: %ld\n", time(NULL));
     

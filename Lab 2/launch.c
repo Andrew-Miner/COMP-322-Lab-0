@@ -7,17 +7,15 @@
 
 int main(int argc, char* argv[])
 {
-    if(argc <= 1)
-    {
+    if(argc <= 1) {
         fprintf(stderr, "Error: program argument missing!\n");
-        return 0;
+        return -1;
     }
     
     int retVal = -1;
     int cPID = fork();
     
-    if(cPID == 0) // Child Process Code
-    {
+    if(cPID == 0) { // Child Process Code
         // Preparing new args
         char* cArgs[argc];
         cArgs[argc - 1] = NULL;
@@ -29,10 +27,9 @@ int main(int argc, char* argv[])
     }
     else        // Parent Process Code
     {
-        if(cPID == -1)
-        {
+        if(cPID == -1) {
             fprintf(stderr, "Error: Failed to create child process!\n");
-            return 0;
+            return -1;
         }
 
         fprintf(stderr, "%s: $$ = %d\n", argv[1], cPID);

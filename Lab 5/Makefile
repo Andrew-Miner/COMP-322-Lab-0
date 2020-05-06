@@ -1,5 +1,5 @@
 # Name: Andrew Miner
-# Project: Lab 3
+# Project: Lab 1
 
 # This is a Makefile for my lab assignment. It allows me to easily and accurately rebuild
 # the lab assignment.
@@ -7,9 +7,9 @@
 
 # EXECUTABLES is a Make Variable (similar to an environment variable) that lists all the
 # "executables" associated with the lab. 
-EXECUTABLES=catcher
-SRC=catcher.c
-OBJ=catcher.o
+EXECUTABLES=a.out
+SRC=a.out.c
+OBJ=a.out.o
 
 # The CC and CFLAGS variables are defined to ensure I'm using the native compiler and
 # that the correct command-line options are set

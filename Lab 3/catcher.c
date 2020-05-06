@@ -21,8 +21,7 @@ void termHandler(int sigNum);
 
 int main(int argc, char* argv[])
 {
-    if(argc <= 1)
-    {
+    if(argc <= 1) {
         fprintf(stderr, "Error: missing signals to catch!\n");
         return EXIT_FAILURE;
     }
@@ -30,12 +29,10 @@ int main(int argc, char* argv[])
     fprintf(stderr, "catcher: $$ = %d\n", getpid());
     
     int termFound = 0;
-    for(int i = 1; i < argc; i++)
-    {
+    for(int i = 1; i < argc; i++) {
         int sig = getSignal(toLower(argv[i]));
         
-        if(sig == -1)
-        {
+        if(sig == -1) {
             fprintf(stderr, "Error: %s is not a valid signal!\n", toUpper(argv[i]));
             continue;
         }
@@ -54,7 +51,7 @@ int main(int argc, char* argv[])
     
     fprintf(stderr, "catcher: Total signals count = %d\n", sigCount);
     
-	return EXIT_SUCCESS;
+    return EXIT_SUCCESS;
 }
 
 void sigHandler(int sigNum)
@@ -75,8 +72,7 @@ void sigHandler(int sigNum)
 char* toUpper(char* str)
 {
     char* tmp = str;
-    while(*str)
-    {
+    while(*str) {
         *str = toupper(*str);
         str++;
     }
@@ -86,8 +82,7 @@ char* toUpper(char* str)
 char* toLower(char* str)
 {
     char* tmp = str;
-    while(*str)
-    {
+    while(*str) {
         *str = tolower(*str);
         str++;
     }
@@ -96,8 +91,7 @@ char* toLower(char* str)
 
 int getSignal(char* name)
 {
-    for(int sig = 1; sig < NSIG; sig++)
-    {
+    for(int sig = 1; sig < NSIG; sig++) {
         char* sigName = strdup(sys_signame[sig]);
         if(sigName && strcmp(name, sigName) == 0)
             return sig;
