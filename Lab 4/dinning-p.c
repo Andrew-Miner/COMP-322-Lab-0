@@ -110,7 +110,8 @@ int isNumber(const char* str)
     return 1;
 }
 
-void termHandler(int sigNum) {
+void termHandler(int sigNum)
+{
     signal(sigNum, termHandler);
     terminate = 1;
 }
